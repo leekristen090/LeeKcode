@@ -1,0 +1,4 @@
+thomas% java Year3000
+The date is: Friday January 1, 1800
+ 
+The date is: Wednesday January 1, 3000
