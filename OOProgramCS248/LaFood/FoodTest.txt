@@ -1,0 +1,24 @@
+thomas% javac Food.java
+thomas% javac LaFoodMain.java
+thomas% java LaFoodMain
+ 
+** Welcome to the La Food Restaurant Simulator! **
+ 
+Please enter a filename: 
+LaFoodfile.txt
+
+Please wait at the bar, Merlin party of 3 people. (Time = 3)
+Please wait at the bar, Arthur Pendragon party of 2 people. (Time = 8)
+Table for Merlin! (Time = 10)
+Please wait at the bar, Sir Lancelot party of 2 people. (Time = 12)
+Table for Arthur Pendragon! (Time = 15)
+Please wait at the bar, The Green Knight party of 3 people. (Time = 17)
+Table for Sir Lancelot! (Time = 20)
+
+** Simulation Terminated **
+The following parties were never sat:
+The Green Knight of 3 people.
+
+Average wait time: 7.333333333333333
+
+Have a nice meal!
