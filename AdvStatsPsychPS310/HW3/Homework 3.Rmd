@@ -1,1 +1,61 @@
+---
+title: "Homework 3"
+author: "Kristen Lee"
+date: "2023-02-12"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Task 1
+```{r}
+tea <- read.csv ("https://blue.butler.edu/~rpadgett/ps310/Data/tea_makes_you_brainy_716.csv", 
+      header= TRUE)
+library(psych)
+describe(tea)
+```
+
+```{r}
+library (olsrr)
+mod5 <- lm(Cognitive_Function~Cups_of_Tea, data=tea)
+ols_regress(mod5)
+summary(mod5)
+```
+
+Based on the output we can see that the p-value = 0.38 so p < 0.05. So, we can reject the Ho which would state that there is no significant relationship between cognitive functioning and cups of tea that a person drinks. This model is able to significantly predict cognitive functioning based on cups of tea that a person drinks. 
+
+To predict cognitive functioning if a person were to drink 10 cups of tea we can create the formula
+cognitive functioning = 49.218 + 0.416(amount of tea in cups). So, the predicted cognitive functioning = 53.82 for 10 cups of tea.
+
+## Task 4
+```{r}
+super <- read.csv ("https://blue.butler.edu/~rpadgett/ps310/Data/Supermodel.csv", 
+      header= TRUE)
+library(psych)
+describe(super)
+```
+
+```{r}
+library (olsrr)
+mod6 <- lm(salary~age+years+beauty, data=super)
+ols_regress(mod6)
+summary(mod6)
+```
+
+Based on this output, age is a significant predictor of a model's salary. Looking at the beta, this is a positive relationship meaning that as a model's age increases, their salary increases. Years of experience or years of being a model is also a significant predictor, but it is a negative relationship. This means that as years goes up, the model's salary decreases. From this model we also see that beauty is not a significant predictor of a model's salary. 
+
+```{r}
+library (olsrr)
+mod7 <- lm(salary~years, data=super)
+ols_regress(mod7)
+
+plot(super$age,super$salary)
+plot(super$years,super$salary)
+plot(super$beauty,super$salary)
+```
+
+The first finding was that years of experience increases, salary decreases, is not what one would expect especially since age has a positive relationship with salary. Here in this output when we do years of experience as the only predictor, the relationship is positive. Using multiple predictors can influence the output of a regression model. 
+
 
