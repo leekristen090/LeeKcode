@@ -1,1 +1,81 @@
- 
+---
+title: "Homework 4"
+author: "Kristen Lee"
+date: "2023-02-14"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Item 1
+### Calculate Effect Size (Cohen's d and r)
+#### Compare these results to the one from homework 2
+Conduct a t-test to see whether life satisfaction depends upon the type of animal to which a person was married.
+```{r}
+goat <- read.csv ("https://blue.butler.edu/~rpadgett/ps310/Data/Goat_or_Dog.csv", 
+      header= TRUE)
+library(psych)
+describe(goat)
+cor.test(goat$life_satisfaction, goat$wife)
+```
+
+```{r}
+library (effectsize)
+goat$wife <- factor(goat$wife, levels=c(1,2), labels=c("goat","dog"))
+cohens_d(goat$life_satisfaction, goat$wife, data=goat, pooled_sd=TRUE)
+```
+
+#### Two Sample t-test
+```{r}
+mod1<- t.test(life_satisfaction~wife, data = goat) #Welch
+mod1
+mod1$stderr #standard error difference
+mod3<- t.test(life_satisfaction~wife, data = goat, var.equal=TRUE)
+mod3
+mod3$stderr
+t2r(mod3$statistic,mod3$parameter)
+```
+```{r}
+mod2<-lm(goat$life_satisfaction~goat$wife)## DV first
+summary(mod2)
+anova(mod2)
+
+```
+
+r = 0.63 and Cohen’s d = -1.57. The life satisfaction of men married to a dog wife was significantly higher than that of men married to a goat wife. This is similar to the results found in homework 2. 
+
+## Item 2
+### Do a paired t-test to see whether the hygiene scores on day 1 differ from those on day 3
+
+```{r}
+festive <- read.csv ("https://blue.butler.edu/~rpadgett/ps310/Data/DownloadFestival.csv", 
+      header= TRUE)
+festive <- na.omit(festive) 
+```
+
+#### Check the Descriptive Stats
+```{r}
+describe(festive$day1)
+describe(festive$day3)
+```
+
+#### Run a paired t-test
+```{r}
+hygiene<-t.test(festive$day1, festive$day3, paired =TRUE, data = festive)
+hygiene
+hygiene$stderr
+mod4<-cor.test(festive$day1,festive$day3) #paired samples correlation
+mod4
+```
+#### Measure Effect Size
+```{r message=FALSE, warning=FALSE}
+library (effectsize)
+
+cohens_d(hygiene)
+
+t2r(hygiene$statistic,hygiene$parameter)
+```
+
+The hygiene scores significantly decreased from day 1 to day 3 of the music festival. 
