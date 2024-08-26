@@ -1,4 +1,4 @@
-These are projects from my CS 341 Advanced Data Structures course at Butler University in spring 2024
+These are projects from my CS 341 Advanced Data Structures course at Butler University in spring 2024. Here you will find short descriptions of each project:
 
 A1 -> build a GPA calculator and then sort the entries from lowest to highest, in terms of calculated GPA
 
