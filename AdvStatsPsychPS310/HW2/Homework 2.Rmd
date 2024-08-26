@@ -1,0 +1,100 @@
+---
+title: "Homework 2"
+author: "Kristen Lee"
+date: "2023-01-30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+#knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Chapter 8 Task 1
+## Basic Desriptive Statistics
+We fail to reject Ho since 0.07 > 0.05. There is no significant difference between the hours studied and the essay grade that the student received. 
+```{r}
+library(psych)
+library(readr)
+essaymarks <- read.csv ("https://blue.butler.edu/~rpadgett/ps310/Data/essaymarks.csv", 
+      header= TRUE)
+describe(essaymarks)
+
+cor(essaymarks$hours, essaymarks$essay)
+cor.test(essaymarks$hours, essaymarks$essay)
+```
+We fail to reject Ho since 0.07 > 0.05. There is no significant difference between the hours studied and the essay grade that the student received 
+
+
+## Plot essaymarks
+```{r}
+plot(essaymarks$hours, essaymarks$essay) 
+abline(v=mean(essaymarks$hours)) ## vertical line
+abline(h=mean(essaymarks$essay)) ## horizontal line
+
+fit<-lm(essaymarks$hours~essaymarks$essay)## DV first
+summary(fit)
+anova(fit)
+
+abline(fit, col="red")
+```
+
+
+# Chapter 8 Task 6
+## Basic Desprictive Statistics
+We reject the Ho because 0.003 < 0.05. This means that there is a significant difference, or significant correlation, between the type of animal wife and life satisfaction. According to this data, being married to a dog is associated with a higher life satisfaction.  
+```{r}
+goat <- read.csv ("https://blue.butler.edu/~rpadgett/ps310/Data/Goat_or_Dog.csv", 
+      header= TRUE)
+describe(goat)
+
+cor(goat$wife, goat$life_satisfaction)
+cor.test(goat$wife, goat$life_satisfaction)
+```
+
+# Question 3
+## IQ predicts social competence 
+```{r}
+sc <- read.csv ("https://blue.butler.edu/~rpadgett/ps310/Data/socialComp.csv", 
+      header= TRUE)
+
+library (psych)
+library(readr)
+describe(sc)
+
+cor(sc$IQ, sc$SocComp)
+
+mod1<-lm(SocComp~IQ, data = sc) #IQ predicts social comp
+#ols_correlations(mod1)
+summary(mod1)
+#ols_regress(mod1)
+
+cor.test(sc$IQ, sc$SocComp)
+```
+
+```{r}
+library(olsrr)
+mod1<-lm(SocComp~IQ, data = sc)
+ols_regress(mod1)
+anova(mod1)
+```
+
+```{r}
+sc$yPre<- mod1$fitted.values
+sc$yRes<- mod1$residuals
+corr.test(sc)
+
+```
+
+In this output we see that this correlation matrix is symmetrical about the main diagonal. The values on the main diagonal are all 1.0. This is because on this diagonal, the variables are paired with themselves and they are perfectly correlated with itself. Since this matrix is symmetrical, the portions above and below the main diagonal have the same information. 
+
+The correlation between social competence and IQ is 0.65 (0.649 rounded). This has been seen in the other outputs. It is part of the basic Pearson product-moment correlation. 
+
+The correlation between IQ and y-predict (y') is a perfect 1.00. This is because y-predict is a transformation of x. All of its variability comes from x, so that's why it's perfectly correlated. 
+
+The correlation between IQ and y-y' is 0.00. This is because we have taken everything out of y that we know from x, so x knows nothing about it. 
+
+The correlation between social competence and y-predict is 0.65. As stated before, y-predict is a transformation of x, so in this case it is similar to correlating x and y. 
+
+The correlation between y' and y-y' is 0.00. They are completely independent of each other.
+
+The correlation between social competence and y-y' is 0.76. This is because y-y' is all the variability in y that is left over after we have removed x from it. It is y correlated with the residuals of y so it has a correlation of the square root of 1-r^2.
