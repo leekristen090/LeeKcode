@@ -1,0 +1,15 @@
+thomas% javac examstat.java
+thomas% java examstat
+** Welcome to the Exam Statistics Program **
+Please enter a filename: examfile.txt
+MAX score: 92
+MIN: score 72
+Median: 83.0
+AVERAGE: 82.5
+Number of scores by letter: 
+A: 1
+B: 3
+C: 2
+D: 0
+F: 0
+There are 6 total scores.
