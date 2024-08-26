@@ -1,0 +1,79 @@
+
+This test is for making sure the deep copy array works 
+** Welcome to the sorting program! **
+
+Please enter a number: 
+10
+
+
+Original: 
+1 1 6 4 0 2 8 3 6 5 
+Using bubble sort: 
+0 1 1 2 3 4 5 6 6 8 
+Bubble sort running time: 1 milliseconds.
+
+Original: 
+1 1 6 4 0 2 8 3 6 5 
+Using insertion sort: 
+0 1 1 2 3 4 5 6 6 8 
+Insertion sort running time: 0 milliseconds.
+
+Original: 
+1 1 6 4 0 2 8 3 6 5 
+Using selection sort: 
+0 1 1 2 3 4 5 6 6 8 
+Selection sort running time: 1 milliseconds.
+
+Original: 
+1 1 6 4 0 2 8 3 6 5 
+Using shell sort: 
+0 1 1 2 3 4 5 6 6 8 
+Shell sort running time: 0 milliseconds.
+
+Original: 
+1 1 6 4 0 2 8 3 6 5 
+Using quick sort: 
+0 1 1 2 3 4 5 6 6 8 
+Quick sort running time: 0 milliseconds.
+
+
+
+
+Different running times test thingy 
+thomas% java SortingOut
+
+** Welcome to the sorting program! **
+
+Please enter a number: 
+10000
+
+Bubble sort running time: 1063 milliseconds.
+Insertion sort running time: 181 milliseconds.
+Selection sort running time: 113 milliseconds.
+Shell sort running time: 6 milliseconds.
+Quick sort running time: 5 milliseconds.
+thomas% java SortingOut
+
+** Welcome to the sorting program! **
+
+Please enter a number: 
+20000
+
+Bubble sort running time: 4581 milliseconds.
+Insertion sort running time: 715 milliseconds.
+Selection sort running time: 468 milliseconds.
+Shell sort running time: 11 milliseconds.
+Quick sort running time: 11 milliseconds.
+thomas% java SortingOut
+
+** Welcome to the sorting program! **
+
+Please enter a number: 
+100000
+
+Bubble sort running time: 149692 milliseconds.
+Insertion sort running time: 27578 milliseconds.
+Selection sort running time: 14612 milliseconds.
+Shell sort running time: 119 milliseconds.
+Quick sort running time: 64 milliseconds.
+thomas% 
