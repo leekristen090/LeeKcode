@@ -1,1 +1,40 @@
+---
+title: "Homework 6"
+author: "Kristen Lee"
+date: "2023-03-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+We have a study of people's memory for ads during the Superbowl. 30 participants were asked to answer questions about ads that were shown during the Superbowl (excluding during halftime) and were measured to see how much they could remember about them. **The researchers were interested in if memory for ad content was associated with the quarter of the game in which the ad was shown.** Do a within subjects ANOVA on the data including a polynomial trend test (the default) and tell me what you learn from it. You should calculate and report eta^2^ and partial eta^2^
+
+## Doing the ANOVA 
+```{r}
+superbowl<- read.csv ("https://blue.butler.edu/~rpadgett/ps310/Data/super_bowl_ads_RMD.csv", 
+      header= TRUE)
+library (car)
+model1 <- Anova( lm(formula = cbind(FirstQt, SecondQt, ThirdQt, FourthQt) ~ 1, data=superbowl),
+                idata = data.frame( Quarter = factor(c("FirstQt", "SecondQt", "ThirdQt", "FourthQt") ) ),
+                idesign = ~Quarter,   icontrast="contr.sum", type = "III" )
+summary (model1)
+```
+
+Looking at the multivariate tests we see the Wilks lambda. This can be interpreted as the amount of variation across the dependent variables (memory for ads) that is not explained by the independent variables (quarter of the game). We have a value of 0.12 and a *p*-value < 0.05. This is ideal, because a value closer to zero indicates that there is less variance not explained by the independent variable. 
+
+From the Mauchly Tests for Sphericity  we see that the test statistic = 0.78 and the *p*-value = 0.24 which is greater than 0.05. Since this value is not significant we can assume that the sphericity assumption has not been violated. If this were to be statistically significant then the assumption would be violated therefore increasing chances of Type 1 errors.
+
+
+## Effect Size
+```{r}
+# SS effect / (SS Effect + all errors (i.e., Total SS)
+Eta2 <- 5052 /(5052 + 3057+ 1599)
+Eta2
+# Partial Eta2 - SS Effect / (SS Effect + Effect errors)
+pEta2 <- 5052 / (5052 + 1599)
+pEta2
+```
+Eta^2^ is the proportion of variance associated with one or more main effects, errors, or interactions in ANVOA. Partial eta^2^ is the ratio of variance associated with an effect, plus that effect and its associated error variance. When there is only one independent variable, partial eta^2^ and eta^2^ are the same. An *eta^2^* = 0.52 and a partial *eta^2^* = 0.76 indicates that the quarter of the game has a significant effect on memory for ads.
 
