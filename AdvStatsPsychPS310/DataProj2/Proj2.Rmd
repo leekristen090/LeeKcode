@@ -1,1 +1,88 @@
- 
+---
+title: "Proj2"
+author: "Kristen Lee, Bella Carlson, Claire Willis"
+date: "2023-02-20"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+#### Willa Kornstein was also in our group but did not help at all or do any work.
+### Read in data
+```{r}
+hsb <- read.csv ("https://blue.butler.edu/~rpadgett/ps310/Data/hsb_revised.csv", 
+      header= TRUE)
+library(psych)
+
+hsb_ses <- factor (hsb$ses,levels =c("Low","Medium","High"))
+```
+
+
+
+## 1. Sample Characteristics 
+### For Gender, Racial Makeup, Socioeconomic Status, and School Type.
+```{r}
+(t=table(hsb$Gender))
+(t1=table(hsb$sctyp))
+(t2=table(hsb$race))
+(t3=table(hsb$ses))
+```
+The participants come from a sample of 600 high school students, female (*N* = 327) and male (*N* = 273), as they graduated. Of these 600 students, approximately 84% (*N* = 506) attend public school and approximately 16% (*N* = 94) attend private school. The racial makeup of this sample includes White, Black, Hispanic, and Other. In this sample we have 72.8% (*N* = 437) of participants that are White, 11.8% (*N* = 71) of participants that are Black, 9.7% (*N* = 58) of participants that are Hispanic, and 5.7% (*N* = 34) that identify as Other. Participants also reported their socioeconomic status (SES) which have been categorized into low, medium and high. We have 23.2% of participants in the low socioeconomic status category (*N* = 139), 49.8% of participants in the medium socioeconomic status category (*N* = 299), and 27% of participants in the high socioeconomic status category (*N* = 162). 
+
+
+## 2. Produce a correlation matrix of reading ability, math ability, writing ability and science performance.
+### Describe what the pattern of relationships tells you about these measures.
+```{r}
+df<-data.frame(hsb$rdg,hsb$wrtg, hsb$math, hsb$sci)
+corr.test(df)
+```
+The correlation matrix can be used as a tool to summarize a data set and assist in visualizing any patterns. In this output we see that this correlation matrix is symmetrical about the main diagonal. The values on the main diagonal are all 1.0. This is because on the diagonal the variables are paired with themselves and are perfectly correlated with themselves. Since this matrix is symmetrical, the portions above and below the main diagonal have the same information. We will be looking at the top portion of the data.
+
+The values above the main diagonal can be found in a Pearson product-moment correlation. The correlation values for reading and writing ability, reading and math ability, and reading and science ability are 0.63, 0.68, and 0.69, respectively. From this first row, we see that reading and science have the highest correlation. This indicates that these two variables have the strongest, positive linear relationship. A positive relationship means that as reading ability increases, science performance also increases. The correlation values for writing and math ability is 0.63 and writing and science ability is 0.57. The correlation value for math and science ability is 0.65. Correlation values range from 0 to 1 with 0 telling us that there is no correlation and 1 meaning that there is a strong correlation between variables. We can see from the output of the correlation matrix that all the relationships between variables have a positive, moderate correlation. 
+
+## 3. Use regression to explore how reading ability, math ability, writing predict Science performance. 
+### Is the overall model predictive of Science performance? How do you know? Be sure to report not only on the overall multiple R2, but also the part and partial correlations. Which skill is the most important predictor of Science Performance and how should you decide that? Are the partial correlations larger that the part correlations? Why is that?
+```{r}
+library(olsrr)
+mod1<-lm(sci~rdg+wrtg+math, data = hsb) #rdg+wrtg+math abilities predicts science performance 
+ols_regress(mod1)
+ols_correlations(mod1)
+```
+From this output, we can see that reading, writing, and math abilities significantly predict science performance since all of the variables have a *p*-value<.05 and *R2* = .546, so we can conclude that the overall model is predictive of science abilities. 
+The beta coefficient allows direct comparisons between independent variables to determine which has the most influence on the dependent variable we can see that output for our independent variables reading (*B* = 0.417), writing (*B* = 0.126), and math (*B* = 0.287) abilities. These observations allow us to conclude that reading abilitiy is the most important predictor of science performance. 
+
+A part correlation is the correlation between an independent variable and the dependent variable after the linear effects of the other independent variables have been removed from the independent variable only. A partial correlation is the correlation between an independent variable and the dependent variable after the linear effects of the other variables have been removed from both the independent variable and the dependent variable. When examining the part correlations scores, reading is the most important predictor of science performance, even though all other subjects are found to be correlated (part corr. = 0.287). Whereas the other two subjects, writing (part corr. = 0.091), and math (part corr. = 0.196) are less significant when removing the other variables and testing for correlation between subjects. The partial correlations are larger than the part correlations because the variability in the dependent variables is removed in the part correlations. So, the partial correlation is designed for the variability when other variables are taken into account rather than being removed. 
+
+## 4. Produce a correlation matrix of Career Aspirations, locus of control, self-concept. 
+### Describe what the pattern of relationships you about these measures.
+```{r}
+df2<-data.frame(hsb$car,hsb$locus, hsb$concpt)
+corr.test(df2)
+```
+As we saw with the first correlation matrix, it is symmetrical about the main diagonal. The values on this main diagonal are all 1.0 because the variables are paired with themselves, so they are perfectly correlated with themselves. Given that this matrix is symmetrical, the values above and below the main diagonal are identical, so we will be using the top portion of the matrix. 
+
+The correlation between career aspirations and locus of control is 0.12. The correlation between career aspiration and self-concept is 0.03 and correlation between locus of control and self-concept is 0.17. The correlation value for math and science ability is 0.65. Correlation values range from 0 to 1 with 0 telling us that there is no correlation and 1 meaning that there is a strong correlation between variables. We can see from this output that all three correlation relationships have a low, positive correlation since they are all close to 0. Therefore, there is a weak linear relationship between career aspiration and self-concept, career aspiration and locus of control, and locus of control and self-concept.  
+
+## 5. Use regression to explore how Career Aspirations scores can be predicted with locus of control and self-concept.
+### Is the overall model predictive of Career Aspirations? How do you know? Be sure to report not only on the overall multiple R2, but also the part and partial correlations. Which are the most important predictor of Career Aspirations? I thought partial correlations were supposed to be larger than the part correlations? But here they are the same. What could explain that? 
+```{r}
+mod2<-lm(car~locus+concpt, data = hsb) #locus and self-concept predicts career aspirations
+ols_regress(mod2)
+ols_correlations(mod2)
+```
+From this output we can see that this model is a significant predictor of career aspirations because the *p*-value < 0.05.
+We can conclude these the relationship between career aspiration scores and predicted locus of control and self-concept is statistically significant (*R2* = 0.013, *f* = 4.054, significant, *p* < 0.05). These two variables, as a set, are statistically significant. Whereas when you look at the two variables separately, you will see only one (self-concept), which was a significant predictor of career aspirations. The predicted locus of self-control is not predictive of career aspirations (part corr. = 0.113), whereas the predicted self-concept is predictive of career aspirations (part corr. = 0.006). When looking at the partial correlation in R, we determined that 0.113 can explain the variance in career aspiration that is predicted by the locus of self-control. Whereas 0.006 can explain the variance in career aspiration that is predicted by self-concept. The part and partial scores are the same because the two variables are not originally correlated. When the variability in the dependent variable is removed, the other variable isn't affected, meaning the variables were not originally correlated. 
+
+## 6. Now use a 2 step hierarchical strategy to predict Career Aspirations scores.
+### Enter SES (as modified above) as a predictor on step 1 (one lm() command). Is it significant? Now on step 2 (in a second lm() function enter ses, math and science scores. Do they predict Career Aspirations s above and beyond SES alone? To answer that you need to look at the change in R2 value between the two models and test it for significance by using an anova() function on the two models.
+```{r}
+mod2<-lm(car~hsb_ses, data = hsb) #SES predicts career aspirations 
+mod3<-lm(car~hsb_ses+math+sci, data = hsb) #SES+ math+science predicts career aspirations 
+
+ols_regress(mod2)
+ols_regress(mod3)
+anova(mod2,mod3)
+```
+In step one we can see from the output that *R2* = 0.023 which indicates that SES alone is not a good predictor of career aspirations. We can also see that a higher socioeconomic status (SES) is a more significant predictor of career aspirations than medium or low SES. In the second step we can see that *R2* = 0.036. R2 increases in the second step, but both values are statistically significant [Step 1 (*R2* =0.023, *f* = 7.111, significant) and Step 2 (*R2* =0.036, *f* = 5.563, significant)]. Concluding that both career aspiration scores for SES and math and science are statistically significant. After conducting an ANOVA for the difference between the two R2 values, we conclude that predicting career aspirations scores go above and beyond the SES alone (Pr(>F) = 0.01985). 
+
