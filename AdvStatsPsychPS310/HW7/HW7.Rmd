@@ -1,1 +1,72 @@
+---
+title: "HW7"
+author: "Kristen Lee"
+date: "2023-04-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Problem #1
+The null hypothesis in this example would be that there is no significant difference between the observed and expected values of proportions of M&M colors in the bag. 
+The alternative hypothesis for this example would be that there is a significant difference between the observed and expected values of proportions of M&M colors in the bag.
+```{r}
+obs1<-c(12, 8, 6, 11, 11, 6)
+colors1=c("Red", "Orange","Yellow","Green","Blue", "Brown")
+exp1=c(0.125, 0.25, 0.125, 0.125, 0.25, 0.125)
+
+results1<-chisq.test(x=obs1, p=exp1)
+results1
+```
+From the results of the *X^2^* test, which gives us a *p*-value = 0.086, we fail to reject the null hypothesis since *p* > 0.05. There is no significant difference between the expected number of different colored M&Ms in the bag and the observed number.
+
+### Effect Size
+```{r}
+library(effectsize)
+effectsize(results1) #This reports Cramer’s V
+sqrt(9.6296/54)
+
+```
+From this output we see that we get a Cramer's V = 0.16 and a Phi = 0.42. These are both measures of effect size for a *X^2^* test. We can see that there is a moderate association, but the differences between expected and observed number of the colors are not significant.
+
+### Bar Plot 
+```{r}
+barplot(results1$residuals, names.arg=colors1)
+abline(h=0)
+```
+
+## Problem #2
+Run a Chi-Square Test of Independence on SES and School Type asking for the Pearson Chi-Square value so you can see if school type and SES are independent.
+```{r}
+hsb <- read.csv ("https://blue.butler.edu/~rpadgett/ps310/Data/hsb_revised.csv", 
+      header= TRUE)
+hsb$ses <-factor(hsb$ses, levels = c("Low", "Medium", "High"))
+
+t1<- table(hsb$sctyp, hsb$ses)
+t1
+results2 <- chisq.test(t1)
+results2
+
+t1[2,]/colSums(t1)
+```
+The null hypothesis for this example would be that the variables school type and socioeconomic status are independent, there is no relationship between the two variables. The alternative hypothesis for this example would be that these variables are not independent and that there is a relationship between them. 
+
+From this *X^2^* test of independence, we get a *p*-value < 0.05 so we can reject the null hypothesis. We can say that there is a relationship between school type and socioeconomic status and that they are correlated, so these variables are not independent from each other.
+
+For additional output we see that 94.2% of students from a low SES are in public school, 83.3% of students from a medium SES are in public school, and 77.8% of students from a high SES are in public school.
+
+### Effect Size
+```{r}
+effectsize(results2) #This reports Cramer’s V
+sqrt(15.856/600)
+```
+From the effect size output we can see that there is a moderately strong relationship between socioeconomic status and the type of school that someone attends. 
+
+```{r}
+tt<- table(hsb$race, hsb$ses)
+tt
+```
+
 
