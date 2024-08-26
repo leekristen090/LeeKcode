@@ -1,0 +1,47 @@
+thomas% javac randg.java
+thomas% java randg
+** Welcome to the GUESSING GAME!! **
+I have a number between 1 and 100. Can you guess it?
+Enter your guess: 
+50
+Too low! Guess again: 
+60
+Too low! Guess again: 
+70
+Too low! Guess again: 
+80
+Too low! Guess again: 
+90
+Too high! Guess again: 
+81
+Too low! Guess again: 
+82
+Too low! Guess again: 
+83
+Too low! Guess again: 
+84
+Too low! Guess again: 
+85
+Too low! Guess again: 
+86
+You win!
+Do you want to play again? (type '1' for yes or '2' for no): 
+1
+** Welcome to the GUESSING GAME!! **
+I have a number between 1 and 100. Can you guess it?
+Enter your guess: 
+50
+Too high! Guess again: 
+40
+Too low! Guess again: 
+41
+Too low! Guess again: 
+42
+Too low! Guess again: 
+43
+Too low! Guess again: 
+44
+You win!
+Do you want to play again? (type '1' for yes or '2' for no): 
+2
+thomas% 
