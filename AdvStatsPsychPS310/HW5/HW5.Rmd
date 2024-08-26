@@ -1,1 +1,71 @@
+---
+title: "Homework 5"
+author: "Kristen Lee"
+date: "2023-03-14"
+output: html_document
+---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Just Do the basic ANOVAs and Contrast effects, Effect sizes and interpret them.
+```{r}
+Teach <- read.csv("Teach.csv", header = TRUE)
+library(psych)
+Teach$group<-factor(Teach$group, ordered=TRUE, levels=c("Punish", "Indifferent", "Reward"))
+
+describeBy(Teach$exam, Teach$group)
+```
+
+## Chapter 12 Task 1
+### Fit a model with planned contrasts to test the hypotheses that: (1) reward results in better exam results than either punishment or indifference; and (2) indifference will lead to significantly better exam results than punishment.
+```{r message=FALSE, warning=FALSE}
+mod1 <- aov(exam ~ group, data=Teach)
+summary (mod1)
+```
+From this ANOVA summary table output we can see that the significance value is less than 0.05 and we can say that teaching style has a significant effect on exam marks. We cannot conclude which group had what effect since we don't know which of them differed.  
+
+##### Plotting the Means (This is not part of the homework)
+```{r message=FALSE, warning=FALSE}
+library(gplots)
+plotmeans(exam~group, data=Teach)
+
+mod2<-lm(exam~group, data=Teach)
+summary(mod2)
+```
+##### Post HOC (This is not part of the homework)
+```{r}
+pairwise.t.test(Teach$exam, Teach$group, p.adj = "none")
+TukeyHSD(mod1, conf.level = .95)
+library(DescTools)
+ScheffeTest(mod1, conf.level=.95)
+```
+We get differnt answers depending on which PostHOC test we use 
+Scheffe is the most stringent 
+
+### Contrasts
+```{r message=FALSE, warning=FALSE}
+library (emmeans)
+emmeans(mod1, pairwise ~ group)
+
+contrast1 <-  c(1,1,-2) # reward different from punish and indifferent 
+contrast2 <-  c(1,-1,0) #indifferent and punish different from Controls
+contrasts(Teach$group) = cbind(contrast1, contrast2) #cbind "oh i want you to bind these three things together"
+contrasts(Teach$group) # this prints the contrast thingy with sig codes 
+mod2 <- aov(exam ~ group, data=Teach) #Type 1 SS - not relevant for one-way ANOVA
+summary.lm (mod2)
+```
+From this contrast output we can see that reward is significantly different than indifference and punishment (*p*-value < 0.05). We can also look at the descriptive statistics and see that mean exam score was significantly higher after reward when compared to indifferent or punish teaching styles.
+
+This output also shows us that the indifferent teaching style produces significantly higher exam scores than the punishment teaching style (*p*-value < 0.05). From the descriptive statistics we see that indifference produces significantly higher exam scores than the punishment teaching style.
+
+These results support the original hypotheses; (1) reward results in better exam results than either punishment or indifference; and (2) indifference will lead to significantly better exam results than punishment. We could conclude that teadchers or professors should reward their students, not punish them.
+
+## Task 2
+### Compute the effect sizes for the previous task.
+```{r message=FALSE, warning=FALSE}
+library(effectsize)
+effectsize(mod1)
+```
+The Eta^2^ = 0.61 indicates that teaching style has a significant effect on exam scores.  
