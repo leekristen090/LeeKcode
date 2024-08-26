@@ -1,1 +1,123 @@
- 
+---
+title: "Proj1"
+author: "Kristen Lee"
+date: "2023-02-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1. Read in the data and check basic descriptive stats
+```{r}
+infidelity<- read.csv("https://blue.butler.edu/~rpadgett/ps310/Data/infidelity.csv", header=TRUE)
+library(psych)
+describe(infidelity)
+summary(infidelity$Partner)
+summary(infidelity$Self)
+```
+
+Partner:
+Q1 = 51.75, Q2 = 70.50, Q3 = 74.25
+
+Self:
+Q1 = 27.75, Q2 = 54.50, Q3 = 88.25
+
+Partner:
+Kurtosis = -0.69
+Skew = -0.49
+
+Self:
+Kurtosis = -1.67
+Skew = -0.04
+
+### Run a multiple regression 
+```{r}
+mod1 <- lm(Partner ~ Self, data=infidelity)
+summary (mod1)
+```
+
+```{r}
+library (olsrr)
+mod1 <- lm(Self~Partner, data=infidelity)
+ols_regress(mod1)
+
+
+```
+
+## 2. Histogram
+```{r}
+hist(infidelity$Partner, breaks = 10)
+hist(infidelity$Self, breaks = 10)
+```
+
+#### Interpreting The Partner Histogram
+  For the partners, the z-score of skewness is -0.49, which is a fairly moderate skew in the negative direction. This means that more of the points in the distribution fall higher on the x-axis than they do in the middle, and most of the data fall higher than where the mean would lie if the data were normally distributed. As demonstrated by the histogram, the participants’ frequency for hitting the target of their partner is higher than where the mean was to rest if the data were normally distributed. This suggests that participants are, generally, consistent at hitting the target that represents their partner after finding out about infidelity. The histogram for the partner is platykurtic as the z-score of kurtosis is -0.69. This means the tails of the distribution contain less area than the tails of a normal distribution. In other words, the scores are more similar to the mean than a normal distribution and could indicate that there were few outliers, as well as the average being sufficiently representative of the distribution. 
+  
+#### Interpreting The Self Histogram
+  For self, the z-score of skewness is -0.04, which is negatively skewed, but it is not an intense skew, and is definitely not as intense compared to the partner variable. Technically, the data points tend to fall higher than the expected mean if the data were normally distributed, but this is not a strong negative skew. This means that the mean frequency at which participants hit the target of themselves was generally higher than where the mean would fall in a normal distribution, but this difference is not very extreme. For self, the z-score of kurtosis for self is -1.67, so it is also platykurtic. This means that the tails of the distribution contain less of the scores than they would in a normal distribution. This indicates that the scores were more alike the mean than different in comparison to a normal distribution.
+
+## 3. Stem and Leaf Plots of Partner and Self
+```{r}
+stem(infidelity$Self, scale = 2)
+stem(infidelity$Partner, scale = 2)
+```
+
+#### Interpreting The Stem and Leaf Plots
+  Stem and leaf plots are similar to histograms. Both charts group data types based on how they fall into certain categories or ranges. The stems are all the numbers that are on the left of the plot, and the leaves are the numbers on the right of the plot. Each leaf represents one data point. The stem on its own does not make a data point, and neither does the leaf. The stem and leaf need to be put together to create a data point.
+
+  The distribution of scores in the stem and leaf plot for both “partner” and “self” is very similar to the distribution of the histograms of the “partner” and “self” (shown below). For the Partner stem plot, there do not seem to be any outliers. The number of shots that hit the “partner” target had a median value of 70.5 (IQR 51.75-74.25). For the Self stem plot, there do not seem to be any outliers. The number of shots that hit the “self” target had a median value of  54.5 (IQR 27.75-88.25). The data points for hitting the “self” target have a wider spread compared to the data points for the “partner” target. This means that the frequency at which the “self” target was hit is less centered around the mean frequency, there is much more variation in frequency compared to the “partner” target.
+
+
+## 4. Single Boxplot with Partner and Self Variables 
+```{r}
+boxplot (infidelity$Partner, xlab="Partner", ylab="Shots That Hit The Target", col="red")  
+boxplot(infidelity$Self, xlab="Self", ylab="Shots That Hit The Target", col="blue")
+boxplot(infidelity$Partner, infidelity$Self, names= c("Partner", "Self"),col=c("red", "blue"), xlab="Target", ylab="# of Hits on Target") 
+```
+
+#### Interpreting the Partner-Self Box-Plot
+  The above box-plots analyzes the frequency that participants shot either an image of themselves or an image of their partners after learning their partner was cheating.For participants who shot the image of their partner, there was a median value of 70.5 (IQR 27.75-74.25). This means that 25% of the frequency scores for hitting the “partner” target fall below 27.75 shots. Furthermore, 50% of the frequency scores are greater than or equal to 70.50, and 75% of all the frequency scores for hitting the “partner” target fall under 74.25 shots. Overall, the partner quartiles show that the frequency scores for hitting that target were distributed fairly close together, as shown by the box size in the above Partner and Self boxplot. This means that there was less consistency among participants in hitting the “self” target after learning about infidelity, and much more consistency in hitting the “partner” target. The frequency at which participants hit the “partner” target seems to be fairly similar across participants. At least, more similar than the number of times at which participants hit the “self” target, which is discussed below.
+
+  For participants who shot an image of themselves after learning that their partner was cheating, there was a median value of 54.5 (IQR 27.75-88.25). This indicates that 25% of the participants shot the image of themselves less than 27.75 times, an additional 25% of the participants shot their own image between 27.75 and 54.5 times, and a total of 50% of participants shot their pictures less than 54.5 times. Further, another 25% of the participants shot their picture between 54.5 and 88.25 times, and a total of 75% of the participants shot their picture 88.25 times or less. The Self box-plot had a lower first quartile and higher third quartile than the Partner boxplot. This indicates that overall there was a greater range of people who would shoot themselves and not their partner.
+
+### 5. New Boxplot (Divided By Gender)
+```{r}
+Partner_Male <- infidelity$Partner[infidelity$Gender=="Male"]
+Self_Male <- infidelity$Self[infidelity$Gender=="Male"]
+Partner_Female <- infidelity$Partner[infidelity$Gender=="Female"]
+Self_Female <- infidelity$Self[infidelity$Gender=="Female"]
+
+summary(Partner_Female)
+summary(Partner_Male)
+summary(Self_Female)
+summary(Self_Male)
+
+
+boxplot(Partner_Female, Partner_Male, Self_Female, Self_Male, names =c("Partner-Female", "Partner-Male", "Self-Female", "Self-Male"), col=c("red", "blue", "purple","green"), xlab="Target", ylab="# of Hits on Target")
+```
+
+## 6. Run A Correlation (cor.test) Between Partner and Self
+```{r}
+cor.test(x=infidelity$Self, y=infidelity$Partner)
+plot(infidelity$Self, infidelity$Partner)
+fit<-lm(infidelity$Partner~infidelity$Self) ## DV first
+abline(fit, col="red")
+```
+
+#### Interpreting the Partner-Self Correlation and Scatterplot 
+  The scatter plot above shows the results of a correlational test for the variables partner and self. The results show that there was not a significant relationship between partner and self by themselves, not including gender (r = -.24, p = .25). The scatter plot reflects this, as there is no obvious gathering of the points in any pattern. They are fairly evenly distributed across the board with no obvious correlation or clustering of the points in any specific way. The regression line is present, but there is no need to run a regression analysis because the variables are not significantly correlated together. The confidence intervals cross zero, indicating that there could be no correlation 95% CI [-0.59, 0.18], t(22) = -1.17, p > .05. 
+
+
+## 7. Big Picture and Interpretation of Gender-Partner-Self Box-Plots
+  The above box-plot analyzes both gender and the frequency of shooting either a self-image or an image of the cheating partner. For males who shot the image of their cheating partner, there was a median value of 70.5 (IQR 68-75.25). This indicates that 25% of males shot their partner 68 times or less and an additional 25% of males shot the image of their partners between 68 and 70.5 times, so a total of 50% of males shot their partners’ image 70.5 times or less. Furthermore, a total of 75% of males shot their partners 75.25 times or less, and the upper 25% of males shot their partners between 70.5 and 75.25 times. The interquartile range was 7.25, and two outliers existed at 52 and 34 hits.
+  
+  For males who shot their own image, there was a median value of 27.5 (IQR 13.25-33.25). This indicates that 25% of males shot their own pictures 13.25 times or less, 25% of males fired between 13.25 and 27.5 shots at their own pictures, and half the males shot their own pictures 27.5 times or less. Furthermore, 25% of males fired between 27.5 and 33.25 shots at their own picture, and a total of 75% of males shot their pictures less than 33.25 times. The interquartile range was 20, and there were no outliers. 
+	
+  For females who shot the image of their partner, there was a median value of 67 (IQR 50.25-74). This indicates that 25% of females hit the target 50.25 times or less, 25% of females shot the image of their partner between 50.25 and 67 times, and half the females shot their partner’s image less than 67 times. Additionally, 25% of females shot their partner’s image between 67 and 74 times, and collectively 75% of females shot their partner’s image less than 74 times. The interquartile range for females shooting the image of their partner was 23.75. There were no outliers.
+	
+  For females who shot their own picture, there was a median value of 88.5 (IQR 81.5-97). This indicates that 25% of females shot themselves 81.5 times or less, 25% of females shot their own pictures between 81.5 and 88.5 times, and half the females shot their own image 88.5 times or less. Furthermore, 75% of females shot themselves 97 times or less, and 25% of females shot themselves between 88.5 and 97 times. The interquartile range for females who shot their own picture was 15.5. There were no outliers.
+	
+  The range for the males who shot their own image does not overlap with the range of females who shot their own image, as the range for females started much higher than the range for males ended. This shows that females are more likely to shoot pictures of themselves compared to males after finding out that their partner is cheating. There was also a higher frequency of males shooting their partners compared to females shooting their partners, and an overall higher frequency of females shooting themselves than males shooting their partners. Overall, the data shows that there is no correlation between self and partner without taking into account gender, as shown by the different boxplots. With gender included, the differences in gender and shooting the self or partner become very clear, with male participants being the least likely to shoot the “self” target after learning about infidelity. The opposite is true with the female participants, as they hit the “self” target with the highest frequency. In terms of hitting the “partner” target, both males and females demonstrated a similar frequency of hits on the “partner” target after learning about infidelity. It is important to note the distributional differences between males and females hitting the “partner” target, with males being much more tightly gathered around the median frequency and females being much more varied in the frequency. This shows less of a consensus in terms of frequency for female participants to hit the “partner” target while the male participants demonstrated less variability and performed more similarly to each other.
+
