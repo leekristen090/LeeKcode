@@ -1,0 +1,66 @@
+thomas% java CampMain
+
+** Welcome to Camp Posanivee! **
+
+Please enter a filename: 
+Camp.txt
+
+Command: A
+There are no campers at this time.
+
+Command: H
+Here is a list of the commands: 
+
+H - help: print a list of commands
+E - enroll a new camper
+D - display the age and diet of a camper
+A - print the average age of the campers
+L - list all campers names in alphabetical order
+V - print the number of vegan campers 
+P - list all the campers in preorder
+Q - quit
+
+Command: E, Kanga
+New camper added: Kanga, 26, V
+
+Command: E, Tigger
+New camper added: Tigger, 28, A
+
+Command: E, Pooh
+New camper added: Pooh, 31, A
+
+Command: L
+Campers in alphabetical order: 
+Kanga
+Pooh
+Tigger
+
+Command: D, Tigger
+Name: Tigger
+Age: 28
+Diet: A
+
+Command: E, Rabbit
+New camper added: Rabbit, 30, V
+
+Command: A
+The average camper age: 28.75
+
+Command: V
+Number of vegan campers: 2
+
+Command: E, Eeyore
+New camper added: Eeyore, 36, V
+
+Command: W, Kanga
+Camper withdrawn.
+
+Command: P
+Preorder transversal: 
+Pooh
+Eeyore
+Tigger
+Rabbit
+
+Command: Q
+Camp Posanivee Program is over.
