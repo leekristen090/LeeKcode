@@ -1,0 +1,50 @@
+#load image
+load ../res/images/mitra.jpg mitra
+
+#histogram of source image
+histogram mitra hist-mitra
+
+#correction of source
+color-correct mitra corrected-mitra
+
+#histogram of correction
+histogram corrected-mitra hist-corrected-mitra
+
+#levels adjust of source
+levels-adjust 20 100 255 mitra adjusted-mitra
+
+#histogram of adjusted
+histogram adjusted-mitra hist-adjusted-mitra
+
+#adjusted then corrected
+color-correct adjusted-mitra adjusted-corrected-mitra
+
+#greyscale split
+grey-scale mitra split-grey-scale-mitra 50
+
+#sepia split
+sepia mitra split-sepia-mitra 50
+
+#save hist-mitra
+save ../res/images/hist-mitra.jpg hist-mitra
+
+#save corrected
+save ../res/images/corrected-mitra.jpg corrected-mitra
+
+#save corrected hist
+save ../res/images/hist-corrected-mitra.jpg hist-corrected-mitra
+
+#save adjusted mitra
+save ../res/images/adjusted-mitra.jpg adjusted-mitra
+
+#save adjusted hist
+save ../res/images/hist-adjusted-mitra.jpg hist-adjusted-mitra
+
+#save adjusted then corrected
+save ../res/images/adjusted-corrected-mitra.jpg adjusted-corrected-mitra
+
+#save split grey-scale
+save ../res/images/split-grey-scale-mitra.jpg split-grey-scale-mitra
+
+#save split sepia
+save ../res/images/split-sepia-mitra.jpg split-sepia-mitra
