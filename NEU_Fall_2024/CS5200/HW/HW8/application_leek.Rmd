@@ -1,0 +1,132 @@
+---
+title: "CS 5200-HW8"
+author: "Kristen Lee"
+date: "2024-11-04"
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## HW8
+
+### Prompt the user for the MySQL username and password. Use the user provided username and password values to connect to the bus database you modified in homework seven.
+
+```{r}
+library(DBI)
+
+connect_to_db <- function() {
+  repeat {
+    # Prompt user for MySQL username and password
+    username <- readline(prompt = "Enter MySQL username: ")
+    password <- readline(prompt = "Enter MySQL password: ")
+    
+    # Try to connect to the MySQL database
+    conn <- tryCatch ({
+      dbConnect(drv = RMySQL::MySQL(), username = username, password = password, host = "127.0.0.1", port = 3306,dbname = "bus_schema_leek")
+    }, error = function(e) {
+      cat("Error in connecting to the database:", e$message, "\n")
+      NULL
+    })
+    
+    # If the connection is successful, return it
+    if (!is.null(conn)) {
+      cat("Connected successfully to the database!\n")
+      return(conn)
+    } else {
+      # Ask if the user wants to retry or exit
+      retry <- readline(prompt = "Failed to connect. Would you like to try again? (y/n): ")
+      if (tolower(retry) != "y") {
+        cat("Exiting the application.\n")
+        return(NULL)
+      }
+    }
+  }
+}
+
+# Establish connection to MySQL database
+myDB <- connect_to_db()
+
+
+dbListTables(myDB)
+```
+
+### Once the user is connected to the database, the user is displayed a menu of
+
+```         
+             1: generate a list of journeys for a specific user
+             2: disconnect from the database and close the application. 
+```
+
+If the user selects 1, display the list of the usernames retrieved from the database. You should retrieve the list of customer names and display the list to the user before prompting the user for a customer name in order to simplify the data entry process. Have the user provide one of the values. Store the result in a host language variable. Like SQL, your application should not be case sensitive when matching text from the user or the database. If the user selects 2, disconnect from the database, and close the application. Generate an error message to standard output and re-prompt the user for input, if the user provides invalid input.
+
+Use the customer’s username as an argument to the get_customer_journeys(customername_p) . Call the procedure.
+
+```{r}
+if (!is.null(myDB)) {
+  cat("Successful connection!")
+  
+  repeat {
+    cat("\nMenu: \n")
+    cat("1: generate a list of journeys for a specific user\n")
+    cat("2: disconnect from the database and close the application")
+    # Prompt the user for a menu choice
+    
+    choice <- as.integer(readline(prompt = "Enter your choice: "))
+    
+    # Validate the choice input
+    if (is.na(choice) || !(choice %in% c(1, 2))) {
+      cat("Invalid choice. Please enter 1 or 2.\n")
+      next  # Skip to the next iteration of the loop
+    }
+    
+    if (choice == 1) {
+      cust_query <- "SELECT DISTINCT username FROM customer"
+      cust_list <- dbGetQuery(myDB, cust_query)
+      
+      if (nrow(cust_list) > 0) {
+        print(cust_list)
+        cat("\nList of available usernames:\n")
+        cat(paste(cust_list$username, collapse = "\n"))  # Print usernames line by line
+        cat("\n")
+      } else {
+        cat("No usernames found in the database.\n")
+        next
+      }
+      
+      # Prompt for a username, ignoring case
+      selected_username <- readline(prompt = "Enter a username from the list above: ")
+      
+      # Call the get_customer_journeys() procedure with the selected username
+      journeys_query <- paste0("CALL get_customer_journeys('", selected_username, "')")
+      journeys <- dbGetQuery(myDB, journeys_query)
+      
+      # Display the journeys in tabular format
+      if (nrow(journeys) > 0) {
+        cat("\nJourneys for user:", selected_username, "\n")
+        print(journeys, row.names = FALSE)  # Print without row names for cleaner output
+      } else {
+        cat("No journeys found for the username:", selected_username, "\n")
+      }
+      
+
+    } else if (choice == 2) {
+      # Disconnect from the database and exit the loop
+      dbDisconnect(myDB)
+      cat("Disconnected from the database. Goodbye!\n")
+      break
+    } else {
+      # Handle invalid input
+      cat("Invalid choice. Please try again.\n")
+    }
+    
+  }
+  
+} else {
+  cat("Failed to connect to the database. Please check your credentials.\n")
+} 
+```
