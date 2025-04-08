@@ -9,32 +9,37 @@ import pizza.ToppingName;
 import pizza.ToppingPortion;
 
 /**
- * This class represents a cheese pizza which implements the observable pizza interface.
+ * This class represents a vegetarian pizza which implements the observable pizza interface.
  */
-public class CheesePizza implements ObservablePizza {
-
+public class VeggiePizza implements ObservablePizza {
   protected Crust crust;
   protected Size size;
   protected Map<ToppingName, ToppingPortion> toppings;
 
   /**
-   * Create a cheese pizza of the specified size with the specified crust.
+   * Create a veggie pizza with all vegetarian toppings, of the specified
+   * size with the specified crust.
    * @param size the size of this pizza
    * @param crust the crust of this pizza
    */
-  protected CheesePizza(Size size, Crust crust, Map<ToppingName, ToppingPortion> toppings) {
+  public VeggiePizza(Size size, Crust crust, Map<ToppingName, ToppingPortion> toppings) {
     if (size == null || crust == null) {
-      throw new IllegalArgumentException("no null size or crust in this cheese pizza!");
+      throw new IllegalArgumentException("veggie with null size or crust not allowed here!");
     }
     this.size = size;
     this.crust = crust;
-    this.toppings = toppings != null ? toppings : addCheeseDefault();
+    this.toppings = toppings != null ? toppings : addVeggieDefault();
   }
 
-  private Map<ToppingName, ToppingPortion> addCheeseDefault() {
+  private Map<ToppingName, ToppingPortion> addVeggieDefault() {
     Map<ToppingName, ToppingPortion> defaultToppings = new HashMap<>();
     defaultToppings.put(ToppingName.Cheese, ToppingPortion.Full);
-    defaultToppings.put(ToppingName.Sauce, ToppingPortion.Full);
+    defaultToppings.put(ToppingName.Sauce,ToppingPortion.Full);
+    defaultToppings.put(ToppingName.BlackOlive,ToppingPortion.Full);
+    defaultToppings.put(ToppingName.GreenPepper,ToppingPortion.Full);
+    defaultToppings.put(ToppingName.Onion,ToppingPortion.Full);
+    defaultToppings.put(ToppingName.Jalapeno,ToppingPortion.Full);
+    defaultToppings.put(ToppingName.Tomato,ToppingPortion.Full);
     return defaultToppings;
   }
 
@@ -64,16 +69,22 @@ public class CheesePizza implements ObservablePizza {
   }
 
   /**
-   * Our cheese pizza builder which extends the abstract class cheese pizza builder.
+   * This is the veggie builder class which extends the abstract class veggie pizza builder.
    */
-  public static class CheesePizzaBuilder extends PizzaBuilder<CheesePizzaBuilder> {
+  public static class VeggiePizzaBuilder extends PizzaBuilder<VeggiePizzaBuilder> {
 
     /**
-     * Build initial cheese pizza.
+     * Build initial veggie pizza.
      */
-    public CheesePizzaBuilder() {
+    public VeggiePizzaBuilder() {
+      this.toppings = new HashMap<>();
       this.toppings.put(ToppingName.Cheese, ToppingPortion.Full);
       this.toppings.put(ToppingName.Sauce, ToppingPortion.Full);
+      this.toppings.put(ToppingName.BlackOlive, ToppingPortion.Full);
+      this.toppings.put(ToppingName.GreenPepper, ToppingPortion.Full);
+      this.toppings.put(ToppingName.Onion, ToppingPortion.Full);
+      this.toppings.put(ToppingName.Jalapeno, ToppingPortion.Full);
+      this.toppings.put(ToppingName.Tomato, ToppingPortion.Full);
     }
 
     /**
@@ -85,16 +96,13 @@ public class CheesePizza implements ObservablePizza {
       if (size == null) {
         throw new IllegalArgumentException("no null sizes!!");
       }
-      return new CheesePizza(size, crust, toppings);
+      return new VeggiePizza(size, crust, toppings);
     }
 
-    /**
-     * return our pizza.
-     * @return pizza of correct type
-     */
     @Override
-    protected CheesePizzaBuilder returnBuilder() {
+    protected VeggiePizzaBuilder returnBuilder() {
       return this;
     }
+
   }
 }
