@@ -1,1 +1,116 @@
-/
+#load image
+load ../res/images/mitra.jpg mitra
+
+#sepia mitra
+sepia mitra sepia-mitra 50
+
+#blur mitra
+blur mitra blur-mitra 50
+
+#sharpen mitra
+sharpen mitra sharp-mitra 50
+
+#grey-scale mitra
+grey-scale mitra grey-scale-mitra 50
+
+#red-component mitra
+red-component mitra red-mitra
+
+#green-component mitra
+green-component mitra green-mitra
+
+#blue-component mitra
+blue-component mitra blue-mitra
+
+#combint mitra
+rgb-combine combo-mitra red-mitra green-mitra blue-mitra
+
+#split mitra
+rgb-split mitra rSplit-mitra gSplit-mitra bSplit-mitra
+
+#flip h
+horizontal-flip mitra horizontal-mitra
+
+#brighten mitra
+brighten 50 mitra brighter-mitra
+
+#darker mitra
+brighten -50 mitra darker-mitra
+
+#compressing things
+compress 20 mitra compress-mitra
+
+#histogram of source
+histogram mitra histogram-mitra
+
+#color correction
+color-correct mitra corrected-mitra
+
+#histogram of correction
+histogram corrected-mitra histogram-corrected-mitra
+
+#levels adjust
+levels-adjust 20 100 255 mitra adjusted-mitra
+
+#histogram of adjusted
+histogram adjusted-mitra histogram-adjusted-mitra
+
+#save adjusted
+save ../res/images/adjusted-mitra.jpg adjusted-mitra
+
+#save histogram
+save ../res/images/histogram-corrected-mitra.jpg histogram-corrected-mitra
+
+#save correction
+save ../res/images/corrected-mitra.jpg corrected-mitra
+
+#save histogram
+save ../res/images/histogram-mitra.jpg histogram-mitra
+
+#save compression
+save ../res/images/compress-mitra.jpg compress-mitra
+
+#save image
+save ../res/images/new-mitra.jpg mitra
+
+#save sepia
+save ../res/images/sepia-mitra.jpg sepia-mitra
+
+#save blur
+save ../res/images/blur-mitra.jpg blur-mitra
+
+#save sharpen
+save ../res/images/sharp-mitra.jpg sharp-mitra
+
+#save sharpen
+save ../res/images/grey-scale-mitra.jpg grey-scale-mitra
+
+#save red
+save ../res/images/red-mitra.jpg red-mitra
+
+#save green
+save ../res/images/green-mitra.jpg green-mitra
+
+#save blue
+save ../res/images/blue-mitra.jpg blue-mitra
+
+#save horizontal
+save ../res/images/horizontal-mitra.jpg horizontal-mitra
+
+#save brighter
+save ../res/images/brighter-mitra.jpg brighter-mitra
+
+#save darker
+save ../res/images/darker-mitra.jpg darker-mitra
+
+#save combo
+save ../res/images/combo-mitra.jpg combo-mitra
+
+#save split red
+save ../res/images/rSplit-mitra.jpg rSplit-mitra
+
+#save split green
+save ../res/images/gSplit-mitra.jpg gSplit-mitra
+
+#save split blue
+save ../res/images/bSplit-mitra.jpg bSplit-mitra
