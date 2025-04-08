@@ -1,0 +1,17 @@
+# load
+load ../res/mitra.jpg mitra
+
+# dither on mitra
+dither mitra dither-mitra
+
+#save
+save ../res/dither-mitra.jpg dither-mitra
+
+# load landscape
+load ../res/landscape.jpg land
+
+# dither on land
+dither land dither-land
+
+#save
+save ../res/dither-land.jpg dither-land
