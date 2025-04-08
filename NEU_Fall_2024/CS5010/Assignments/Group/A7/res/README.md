@@ -26,7 +26,7 @@ listener to allow for the manipulation to be applied.
 
 ## Note
 In the res folder, there is a folder holding the script files. There are two script files 
-ScriptAll.txt, which was the given script file from the provides. There is Script2.txt, which is 
+ScriptAll.txt, which was the given script file from the providers. There is Script2.txt, which is 
 the script that we implemented.
 
 # Image Citations
