@@ -1,0 +1,44 @@
+#loading
+load images/Ruth.png ruth
+
+#sepia command
+sepia new-ruth sepia-ruth
+
+#sharpen command
+sharpen ruth sharpen-ruth
+
+#blur command
+blur ruth blur-ruth
+
+#brighten command positive
+brighten 50 ruth br-ruth
+
+#brighten command negative
+brighten -50 ruth dark-ruth
+
+#flip vert
+vertical-flip ruth vert-ruth
+
+#flip horz on vert-ruth
+horizontal-flip vert-ruth vert-horz-ruth
+
+#luma grey
+luma-component ruth lumaGrey-ruth
+
+#save sepia
+save images/sepia-ruth.png sepia-ruth
+
+#save sharp
+save images/sharpen-ruth.png sharp-ruth
+
+#save blur
+save images/blur-ruth.png blur-ruth
+
+#save brighter
+save images/br-ruth.png br-ruth
+
+#save darker
+save images/dark-ruth.png dark-ruth
+
+#save grey
+save images/lumaGrey-ruth.png lumaGrey-ruth
