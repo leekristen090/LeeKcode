@@ -3,10 +3,10 @@ import org.junit.Test;
 
 import solution.ChessPiece;
 import solution.Color;
-import solution.Rook;
+import solution.Bishop;
 import static org.junit.Assert.*;
 
-public class RookTest {
+public class BishopTest {
   private boolean[][] results;
 
   @Before
@@ -32,13 +32,15 @@ public class RookTest {
 
     for (int i = 0; i < 8; i++) {
       for (int j = 0; j < 8; j++) {
+        if ((i == piece.getRow()) && (j == piece.getColumn()))
+          continue;
+        ChessPiece another = new Bishop(i, j, Color.values()[(piece.getColor().ordinal() + 1)
+                % Color.values().length]);
 
-        if ((i == piece.getRow()) && (j == piece.getColumn())) continue;
-        ChessPiece another = new Rook(i, j,
-        Color.values()[(piece.getColor().ordinal() + 1) % Color.values().length]);
-
-        assertEquals("Unexpected canKill result for " + "i=" + i + " j=" + j + "",
-            results[i][j], piece.canKill(another));
+        assertEquals("Unexpected canKill result for "
+                     + "i=" + i + " j=" +
+                     j + "",
+                results[i][j], piece.canKill(another));
       }
     }
   }
@@ -51,17 +53,17 @@ public class RookTest {
     for (int row = 0; row < 8; row++) {
       for (int col = 0; col < 8; col++) {
         for (Color c : Color.values()) {
-          piece = new Rook(row, col, c);
-
+          piece = new Bishop(row, col, c);
           assertEquals("Row number does not match what was initialized", row,
-            piece.getRow());
+                  piece.getRow());
           assertEquals("Column number does not match what was initialized",
-            col, piece.getColumn());
-          assertEquals("Color does not match what was initialized",
-            c, piece.getColor());
+                  col, piece.getColumn());
+          assertEquals("solution.Color does not match what was initialized",
+                  c, piece.getColor());
         }
       }
     }
+
   }
 
   @Test(timeout = 500)
@@ -71,14 +73,14 @@ public class RookTest {
     for (Color c : Color.values()) {
       for (int i = 0; i < 8; i++) {
         try {
-          piece = new Rook(i, -1, c);
+          piece = new Bishop(i, -1, c);
           fail("Did not throw an exception when rook is created with invalid " + "row");
         } catch (IllegalArgumentException e) {
           //passes
         }
 
         try {
-          piece = new Rook(-1, i, c);
+          piece = new Bishop(-1, i, c);
           fail("Did not throw an exception when rook is created with invalid " + "column");
         } catch (IllegalArgumentException e) {
           //passes
@@ -87,12 +89,13 @@ public class RookTest {
     }
   }
 
+
   @Test(timeout = 500)
-  public void testRookMoves() {
+  public void testBishopMoves() {
     for (int row = 0; row < 8; row++) {
       for (int col = 0; col < 8; col++) {
         initializeResults();
-        ChessPiece piece = new Rook(row, col, Color.BLACK);
+        ChessPiece piece = new Bishop(row, col, Color.BLACK);
 
         setupResults(row, col);
         verifyMoveResults(piece);
@@ -101,12 +104,12 @@ public class RookTest {
   }
 
   @Test(timeout = 500)
-  public void testRookKills() {
+  public void testBishopKills() {
     for (Color c : Color.values()) {
       for (int row = 0; row < 8; row++) {
         for (int col = 0; col < 8; col++) {
           initializeResults();
-          ChessPiece piece = new Rook(row, col, c);
+          ChessPiece piece = new Bishop(row, col, c);
 
           setupResults(row, col);
           verifyKillResults(piece);
@@ -124,12 +127,27 @@ public class RookTest {
     }
   }
 
+
   private void setupResults(int row, int col) {
     //check if canMove works
     for (int i = 0; i < 8; i++) {
-      results[i][col] = true;
-      results[row][i] = true;
+      if ((row + i) < 8) {
+        if ((col + i) < 8) {
+          results[row + i][col + i] = true;
+        }
+        if (col >= i) {
+          results[row + i][col - i] = true;
+        }
+      }
+
+      if (row >= i) {
+        if ((col + i) < 8) {
+          results[row - i][col + i] = true;
+        }
+        if (col >= i) {
+          results[row - i][col - i] = true;
+        }
+      }
     }
   }
-
 }
